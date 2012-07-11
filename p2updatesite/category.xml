@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.fonal.feature_0.0.1.qualifier.jar" id="org.fonal.feature" version="0.0.1.qualifier">
+      <category name="fonal-ndk-category"/>
+   </feature>
+   <category-def name="fonal-ndk-category" label="fonal-ndk-category"/>
+</site>

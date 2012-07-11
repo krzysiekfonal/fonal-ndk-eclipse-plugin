@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.fonal.feature_0.0.1.201207092327.jar" id="org.fonal.feature" version="0.0.1.201207092327">
+      <category name="fonal-ndk-tool"/>
+   </feature>
+   <category-def name="fonal-ndk-tool" label="fonal-ndk-tool">
+      <description>
+         Support for android ndk for eclipse
+      </description>
+   </category-def>
+</site>

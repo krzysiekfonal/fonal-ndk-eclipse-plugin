@@ -4,3 +4,12 @@
 *.jar
 *.war
 *.ear
+
+# Maven builds
+plugin/target/
+feature/target/
+master/target
+p2updatesite/target/
+
+# Eclipse project
+.project
