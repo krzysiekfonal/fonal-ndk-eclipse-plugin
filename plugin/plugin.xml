@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="4.2"?>
+<plugin>
+	<extension
+	      point="org.eclipse.ui.preferencePages">
+	      <page 
+	      	id="org.fonal.ndkplugin.ndkprefs"
+	      	name="Fonal NDK"       	
+	      	class="org.fonal.ndkplugin.preferences.NdkPreferencePage">
+	      </page>
+	</extension>
+ <extension
+       point="org.eclipse.core.runtime.products">
+    <product
+          application="org.eclipse.e4.ui.workbench.swt.application"
+          name="fonal-ndkplugin">
+       <property
+             name="applicationCSS"
+             value="fonal.ndkplugin.deftheme">
+       </property>
+    </product>
+ </extension>
+ <extension
+       point="org.eclipse.e4.ui.css.swt.theme">
+    <theme
+          basestylesheeturi="css/style.css"
+          id="fonal.ndkplugin.deftheme"
+          label="fonal.ndkplugin.deftheme">
+    </theme>
+ </extension>
+</plugin>

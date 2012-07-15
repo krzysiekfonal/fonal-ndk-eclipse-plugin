@@ -1,10 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: fonal-ndk-ep
-Bundle-SymbolicName: org.fonal.ndkplugin
+Bundle-SymbolicName: org.fonal.ndkplugin;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.fonal.ndkplugin.Activator
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.e4.ui.css.swt.theme;bundle-version="0.9.2",
+ org.eclipse.e4.ui.css.core;bundle-version="0.10.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+
