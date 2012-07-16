@@ -12,16 +12,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.fonal.ndkplugin.Activator;
 import org.fonal.ndkplugin.Messages;
 
 import static org.fonal.ndkplugin.Consts.*;
 
 public class NdkPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+
+	DirectoryFieldEditor ndkPath;
 	
 	@Override
 	protected Control createContents(Composite parent) {
 		Composite content = new Composite(parent, SWT.NONE);
-		final DirectoryFieldEditor ndkPath = new DirectoryFieldEditor(NdkPreferences.PREFERENCE_NDK_PATH, Messages.NDK_PATH, content);
+		ndkPath = new DirectoryFieldEditor(NdkPreferences.PREFERENCE_NDK_PATH, Messages.NDK_PATH, content);
 		ndkPath.setEmptyStringAllowed(false);
 		ndkPath.setPropertyChangeListener(new IPropertyChangeListener() {			
 			@Override
@@ -43,12 +46,23 @@ public class NdkPreferencePage extends PreferencePage implements IWorkbenchPrefe
 				}
 			}
 		});
+		ndkPath.setPage(this);
+		ndkPath.setPreferenceStore(getPreferenceStore());
+		ndkPath.load();
 		
 		return content;
 	}
 
 	@Override
+	public boolean performOk() {
+		ndkPath.store();
+		
+		return super.performOk();
+	}
+	
+	@Override
 	public void init(IWorkbench workbench) {
+		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
 }

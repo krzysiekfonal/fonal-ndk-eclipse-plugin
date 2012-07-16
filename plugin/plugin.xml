@@ -9,23 +9,42 @@
 	      	class="org.fonal.ndkplugin.preferences.NdkPreferencePage">
 	      </page>
 	</extension>
- <extension
-       point="org.eclipse.core.runtime.products">
-    <product
-          application="org.eclipse.e4.ui.workbench.swt.application"
-          name="fonal-ndkplugin">
-       <property
-             name="applicationCSS"
-             value="fonal.ndkplugin.deftheme">
-       </property>
-    </product>
- </extension>
- <extension
-       point="org.eclipse.e4.ui.css.swt.theme">
-    <theme
-          basestylesheeturi="css/style.css"
-          id="fonal.ndkplugin.deftheme"
-          label="fonal.ndkplugin.deftheme">
-    </theme>
- </extension>
+	<extension
+	      point="org.eclipse.core.runtime.preferences">
+	      <initializer
+             class="org.fonal.ndkplugin.preferences.NdkPreferencesInitializer">
+	      </initializer>
+	</extension>
+ 
+ 	<extension
+       point="org.eclipse.ui.menus">       
+       <menuContribution             
+             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">                                       
+             <command             	   
+                   commandId="org.fonal.ndkplugin.ndkaddsupport"
+                   label="Add NDK support"
+                   style="push">    
+                   <visibleWhen
+                         checkEnabled="false">
+                         <with
+                               variable="activeMenuSelection">
+                               <iterate ifEmpty="false" operator="and">
+                                   <test
+                                         property="org.eclipse.jdt.launching.hasProjectNature" 
+                                         args="com.android.ide.eclipse.adt.AndroidNature">                                         
+                                   </test>  
+                               </iterate>
+                         </with>
+                   </visibleWhen>               
+             </command>
+       </menuContribution>
+ 	</extension>
+ 	<extension
+       point="org.eclipse.ui.commands">
+       <command
+             id="org.fonal.ndkplugin.ndkaddsupport"
+             defaultHandler="org.fonal.ndkplugin.handlers.AddNdkSupportHandler"
+             name="NDKSupport">
+       </command>
+ 	</extension>
 </plugin>
