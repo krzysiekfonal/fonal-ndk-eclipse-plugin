@@ -19,8 +19,9 @@
  	<extension
        point="org.eclipse.ui.menus">       
        <menuContribution             
-             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">                                       
-             <command             	   
+             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+             <menu label="Fonal NDK tools">                   
+                   <command             	   
                    commandId="org.fonal.ndkplugin.ndkaddsupport"
                    label="Add NDK support"
                    style="push">    
@@ -37,6 +38,7 @@
                          </with>
                    </visibleWhen>               
              </command>
+             </menu>
        </menuContribution>
  	</extension>
  	<extension

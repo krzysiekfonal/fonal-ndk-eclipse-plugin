@@ -8,6 +8,7 @@ public class Messages extends NLS {
 	//***messages***
 	public static String NDK_PATH;
 	public static String WRONG_NDK_PATH;
+	public static String CONVERT_TO_NDK_JOB_NAME;
 	
 	//***Init block***
 	static {

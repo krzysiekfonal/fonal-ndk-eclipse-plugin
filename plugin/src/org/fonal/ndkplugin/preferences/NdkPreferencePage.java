@@ -61,6 +61,13 @@ public class NdkPreferencePage extends PreferencePage implements IWorkbenchPrefe
 	}
 	
 	@Override
+	protected void performDefaults() {
+		ndkPath.loadDefault();
+		
+        super.performDefaults();
+    }
+	
+	@Override
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
