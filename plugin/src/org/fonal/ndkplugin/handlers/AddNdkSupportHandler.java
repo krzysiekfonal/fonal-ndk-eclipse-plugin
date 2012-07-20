@@ -1,5 +1,6 @@
 package org.fonal.ndkplugin.handlers;
 
+import org.eclipse.cdt.core.CCProjectNature;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
@@ -18,6 +19,7 @@ import org.eclipse.cdt.managedbuilder.ui.wizards.CfgHolder;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,6 +32,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.fonal.ndkplugin.Activator;
 import org.fonal.ndkplugin.Messages;
+import org.fonal.ndkplugin.helpers.MkHelper;
 
 public class AddNdkSupportHandler extends AbstractHandler {
 
@@ -57,10 +60,15 @@ public class AddNdkSupportHandler extends AbstractHandler {
 		}
 
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {			
+		protected IStatus run(IProgressMonitor monitor) {
+			IStatus result = Status.OK_STATUS;
 			try {
+				monitor.beginTask(Messages.CONVERT_TO_NDK_JOB_NAME, IProgressMonitor.UNKNOWN);
+				
 				//convert project to CC nature
-				CCorePlugin.getDefault().convertProjectToCC(androidProject, monitor, CDT_PROJECT_ID);
+				if (!androidProject.hasNature(CCProjectNature.CC_NATURE_ID)) {
+					CCorePlugin.getDefault().convertProjectToCC(androidProject, monitor, CDT_PROJECT_ID);
+				}
 				
 				//add builders configurations - UNSAFE FRAGMENT OF CODE
 				//may be changed in in future CDT versions
@@ -91,12 +99,23 @@ public class AddNdkSupportHandler extends AbstractHandler {
 				ConfigurationDataProvider.setDefaultLanguageSettingsProviders(androidProject, cfg, cfgDes);
 				
 				mngr.setProjectDescription(androidProject, des);
+				
+				//create JNI dir if not exist
+				IFolder jniFolder = androidProject.getFolder("jni");
+				if (!jniFolder.exists()) {
+					jniFolder.create(true, true, monitor);
+				}
+				
+				//create default Android.mk file
+				MkHelper.createMkFile(jniFolder);
+								
 			} catch (CoreException e) {
 				e.printStackTrace();
-				return new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage());
+				result =  new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage());
 			}
 			
-			return Status.OK_STATUS;
+			monitor.done();			
+			return result;
 		}
 		
 	}
