@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
-	<modelVersion>4.0.0</modelVersion>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <relativePath>../pom.xml</relativePath>	
+    <artifactId>ndkplugin</artifactId>
+    <groupId>org.fonal</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
 
-	<parent>
-		<relativePath>../master/pom.xml</relativePath>
-		<groupId>org.fonal</groupId>
-		<artifactId>parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-
-	<artifactId>org.fonal.ndkplugin</artifactId>
-	<packaging>eclipse-plugin</packaging>
-	<name>Plugin for support NDK in eclipse</name>
-</project> 
+  <artifactId>org.fonal.ndkplugin</artifactId>
+  <packaging>eclipse-plugin</packaging>
+</project>

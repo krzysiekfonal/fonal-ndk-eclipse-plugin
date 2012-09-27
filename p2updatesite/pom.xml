@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
-	<modelVersion>4.0.0</modelVersion>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<relativePath>../master/pom.xml</relativePath>
-		<groupId>org.fonal</groupId>
-		<artifactId>parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+	    <relativePath>../pom.xml</relativePath>
+	    <groupId>org.fonal</groupId>
+	    <artifactId>ndkplugin</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>org.fonal.p2updatesite</artifactId>
 	<packaging>eclipse-repository</packaging>
 	<name>Repository for ndk tool</name>
-	
-<build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-p2-repository-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <configuration>
-          <includeAllDependencies>false</includeAllDependencies>
-          <createArtifactRepository>true</createArtifactRepository>
-          <compress>true</compress>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-</project> 
+
+	<build>
+	    <plugins>
+	      <plugin>
+	        <groupId>org.eclipse.tycho</groupId>
+	        <artifactId>tycho-p2-repository-plugin</artifactId>
+	        <version>${tycho-version}</version>
+	        <configuration>
+	          <includeAllDependencies>false</includeAllDependencies>
+	          <createArtifactRepository>true</createArtifactRepository>
+	          <compress>true</compress>
+	        </configuration>
+	      </plugin>
+	    </plugins>
+       </build>
+</project>

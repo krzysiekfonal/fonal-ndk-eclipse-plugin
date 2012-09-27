@@ -1,5 +1,8 @@
 package org.fonal.ndkplugin.handlers;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.eclipse.cdt.core.CCProjectNature;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.model.CoreModel;
@@ -15,24 +18,34 @@ import org.eclipse.cdt.managedbuilder.internal.core.ManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.ManagedProject;
 import org.eclipse.cdt.managedbuilder.internal.core.ToolChain;
 import org.eclipse.cdt.managedbuilder.internal.dataprovider.ConfigurationDataProvider;
-import org.eclipse.cdt.managedbuilder.ui.wizards.CfgHolder;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.fonal.ndkplugin.Activator;
 import org.fonal.ndkplugin.Messages;
+import org.fonal.ndkplugin.helpers.JDOMHelper;
+import org.fonal.ndkplugin.helpers.JDOMHelper.JDOMHelperCollectionException;
 import org.fonal.ndkplugin.helpers.MkHelper;
+import org.fonal.ndkplugin.helpers.OsHelper;
+import org.fonal.ndkplugin.preferences.NdkPreferences;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 public class AddNdkSupportHandler extends AbstractHandler {
 
@@ -96,8 +109,7 @@ public class AddNdkSupportHandler extends AbstractHandler {
 				CConfigurationData data = cfg.getConfigurationData();
 				ICConfigurationDescription cfgDes = des.createConfiguration(ManagedBuildManager.CFG_DATA_PROVIDER_ID, data);
 
-				ConfigurationDataProvider.setDefaultLanguageSettingsProviders(androidProject, cfg, cfgDes);
-				
+				ConfigurationDataProvider.setDefaultLanguageSettingsProviders(androidProject, cfg, cfgDes);				
 				mngr.setProjectDescription(androidProject, des);
 				
 				//create JNI dir if not exist
@@ -108,6 +120,13 @@ public class AddNdkSupportHandler extends AbstractHandler {
 				
 				//create default Android.mk file
 				MkHelper.createMkFile(jniFolder);
+
+				//change a few settings in project properties 
+				setCProjectFile(androidProject.getFile(".cproject"));
+				
+				//reload project
+				androidProject.close(monitor);
+				androidProject.open(monitor);
 								
 			} catch (CoreException e) {
 				e.printStackTrace();
@@ -116,6 +135,31 @@ public class AddNdkSupportHandler extends AbstractHandler {
 			
 			monitor.done();			
 			return result;
+		}
+		
+		private void setCProjectFile(IFile cproject) {
+			SAXBuilder builder = new SAXBuilder();
+			try {
+				String filename = cproject.getLocation().toOSString();
+				Document cprojectxml = builder.build(filename);
+				Element root = cprojectxml.getRootElement();
+				try {
+					//modify .cproject
+					Element builderElement = JDOMHelper.createJDOMHelper(root).findElementsByName("builder").single();
+					builderElement.setAttribute("command", NdkPreferences.getNDKPath() + 
+							(OsHelper.isWindows() ? "\\" : "/" ) + 
+							"ndk-build");
+					
+					//update .cproject
+					new XMLOutputter(Format.getPrettyFormat()).output(cprojectxml, new FileWriter(filename));
+				} catch (JDOMHelperCollectionException e) {
+					e.printStackTrace();
+				}
+			} catch (JDOMException e) {				
+				e.printStackTrace();
+			} catch (IOException e) {				
+				e.printStackTrace();
+			}
 		}
 		
 	}
