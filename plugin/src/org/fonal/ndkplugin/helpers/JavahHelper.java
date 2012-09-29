@@ -12,8 +12,10 @@ public class JavahHelper {
 					projectDir + File.separator + "bin" + File.separator + "classes",
 					fullyQualifiedClassName);
 			System.out.println(command);
-			Runtime.getRuntime().exec(command);
+			Runtime.getRuntime().exec(command).waitFor();
 		} catch (IOException e) {			
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}	

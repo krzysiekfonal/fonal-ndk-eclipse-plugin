@@ -16,7 +16,8 @@ public class MkHelper {
 			//create content of default Android.mk file
 			mkContent.append("LOCAL_PATH 		:= $(call my-dir)\n");
 			mkContent.append("include $(CLEAR_VARS)\n\n");
-			mkContent.append("#LOCAL_MODULE 	:= NAME OF YOUR LIBRARY\n");
+			mkContent.append("#Below please type your proper name of library\n");
+			mkContent.append("LOCAL_MODULE 	:= default\n");			
 			mkContent.append("#LOCAL_SRC_FILES  := C/CPP FILES OF LIBRARY\n\n");
 			mkContent.append("include $(BUILD_SHARED_LIBRARY)\n");
 			

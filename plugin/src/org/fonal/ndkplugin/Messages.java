@@ -7,9 +7,10 @@ public class Messages extends NLS {
 	
 	//***messages***
 	public static String NDK_PATH;
+	public static String API_LEVEL;
 	public static String WRONG_NDK_PATH;
 	public static String CONVERT_TO_NDK_JOB_NAME;
-	
+		
 	//***Init block***
 	static {
 		NLS.initializeMessages(BASE_NAME, Messages.class);

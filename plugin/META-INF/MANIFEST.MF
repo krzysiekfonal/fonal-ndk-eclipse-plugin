@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: fonal-ndk-ep
 Bundle-SymbolicName: org.fonal.ndkplugin;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 0.0.2.qualifier
 Bundle-ClassPath: .,
  libs/jdom-2.0.3.jar
 Bundle-Activator: org.fonal.ndkplugin.Activator

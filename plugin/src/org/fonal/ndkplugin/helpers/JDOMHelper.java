@@ -83,6 +83,15 @@ public class JDOMHelper {
 		}
 	}
 	
+	/**
+	 * This method return all elements
+	 * 
+	 * @return all current elements collection
+	 */
+	public List<Element> all() {
+		return elementsCollection;
+	}
+	
 	
 	@SuppressWarnings("serial")
 	public static class JDOMHelperCollectionException extends Exception {		

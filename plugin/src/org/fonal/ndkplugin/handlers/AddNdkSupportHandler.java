@@ -2,6 +2,7 @@ package org.fonal.ndkplugin.handlers;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.cdt.core.CCProjectNature;
 import org.eclipse.cdt.core.CCorePlugin;
@@ -144,11 +145,46 @@ public class AddNdkSupportHandler extends AbstractHandler {
 				Document cprojectxml = builder.build(filename);
 				Element root = cprojectxml.getRootElement();
 				try {
-					//modify .cproject
+					//modify .cproject - needed to change make command builder and
+					//add to includes headers from NDK
 					Element builderElement = JDOMHelper.createJDOMHelper(root).findElementsByName("builder").single();
+//					builderElement.setAttribute("command", NdkPreferences.getNDKPath() + 
+//							(OsHelper.isWindows() ? "\\" : "/" ) + 
+//							"ndk-build");
 					builderElement.setAttribute("command", NdkPreferences.getNDKPath() + 
-							(OsHelper.isWindows() ? "\\" : "/" ) + 
+							System.getProperty("file.separator") + 
 							"ndk-build");
+					
+					//add unclude path to every languages
+					String includePath = NdkPreferences.getNDKPath() + 
+							System.getProperty("file.separator") +
+							"platforms" +
+							System.getProperty("file.separator") +
+							NdkPreferences.getApiLevel() +
+							System.getProperty("file.separator") +
+							"arch-arm" +
+							System.getProperty("file.separator") +
+							"usr" + 
+							System.getProperty("file.separator") +
+							"include";
+					List<Element> tools = JDOMHelper.createJDOMHelper(root).findElementsByName("tool").all();
+					for (Element tool : tools) {
+						if (!tool.getAttributeValue("name").equals("holder for library settings")) {
+							//add option element if not exist
+							Element option = tool.getChild("option");
+							if (option == null) {
+								option = new Element("option");
+								option.setAttribute("id", "org.eclipse.cdt.build.core.settings.holder.incpaths");
+								option.setAttribute("name", "Include Paths");
+								option.setAttribute("valueType", "includePath");
+								tool.addContent(option);
+							}
+							Element listOptionValue = new Element("listOptionValue");
+							listOptionValue.setAttribute("builtIn", "false");
+							listOptionValue.setAttribute("value", includePath);
+							option.addContent(listOptionValue);
+						}
+					}
 					
 					//update .cproject
 					new XMLOutputter(Format.getPrettyFormat()).output(cprojectxml, new FileWriter(filename));
